@@ -9,3 +9,7 @@ This demo project can be used to show how Terragrunt works.
 - Add a tfstate container in this Storage Account
 
 Do the same for each environment/region you want to show.
+
+```
+terragrunt run-all apply     --terragrunt-working-dir environment/dev/francecentral/     --terragrunt-include-external-dependencies     --terragrunt-non-interactive
+```

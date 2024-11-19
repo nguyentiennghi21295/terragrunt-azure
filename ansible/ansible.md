@@ -15,18 +15,32 @@
 
    ```
     [jenkins-master]
-    18.209.18.194
+    10.0.1.7
     [jenkins-master:vars]
-    ansible_user=ec2-user
-    ansible_ssh_private_key_file=/opt/dpo.pem
+    ansible_user=adminuser
+    ansible_ssh_private_key_file=/home/adminuser/private_key.pem
+
     [jenkins-slave]
-    54.224.107.148
+    10.0.1.9
+
     [jenkins-slave:vars]
-    ansible_user=ec2-user
-    ansible_ssh_private_key_file=/opt/dpo.pem
+    ansible_user=adminuser
+    ansible_ssh_private_key_file=/home/adminuser/private_key.pem
    ```
 
 3. Test the connection
+
    ```sh
    ansible -i hosts all -m ping
    ```
+
+4. install:
+
+```
+ansible-playbook -i hosts jenkins-master-setup.yaml --check
+```
+
+```
+ansible-playbook -i hosts jenkins-master-setup.yaml
+ansible-playbook -i hosts v2-jenkins-slave-setup.yaml
+```
