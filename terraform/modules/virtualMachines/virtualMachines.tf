@@ -5,7 +5,7 @@ resource "azurerm_linux_virtual_machine" "servers" {
   name                = each.key
   resource_group_name = var.rg_name
   location            = var.rg_location
-  size                = var.vm_size # Smaller instance size for free tier
+  size                = each.key == "Jenkins-master" ? "Standard_B2s" : "Standard_B1s" # Conditional size based on VM name
   admin_username      = "adminuser"
   network_interface_ids = [
     var.vm_nics[each.key]
