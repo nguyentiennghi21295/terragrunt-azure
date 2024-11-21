@@ -4,12 +4,18 @@ include "root" {
 }
 
 terraform {
-  source = "${get_parent_terragrunt_dir()}/terraform/modules/appservice"
+  source = "${get_parent_terragrunt_dir()}/../terraform/modules//${basename(get_terragrunt_dir())}"
 }
+
+dependencies {
+  paths = ["../resource-group","../networking","../virtualMachines"]
+}
+
 
 # Values for current module - Specific to this project
 inputs = {
   tags = {
+    tier      = "${basename(get_terragrunt_dir())}"
     createdby = "Terragrunt"
     version   = "1.1"
   }
