@@ -13,6 +13,11 @@ pipeline {
         PATH = "${MAVEN_HOME}/bin:${PATH}"  // Ensure Maven is in the PATH
     }
     stages {
+        stage('Check Shell') {
+            steps {
+                sh 'echo $SHELL'
+            }
+        }
         stage("build"){
             steps {
                  echo "----------- build started ----------"
