@@ -29,6 +29,6 @@ variable "tags" {
 
 variable "vm_vms" {
   type    = list(string)
-  # default = ["Jenkins-master", "Ansible"]
+  # default = ["Jenkins-master", "Jenkins-slave"]
   default = ["Jenkins-master", "Jenkins-slave", "Ansible"]
 }
