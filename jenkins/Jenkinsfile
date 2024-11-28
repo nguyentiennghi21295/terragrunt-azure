@@ -5,9 +5,9 @@ pipeline {
             label 'jenkinsslave'
         }
     }
-    tools {
-        git 'Default'  // Specify the exact path to the Git executable
-    }
+    // tools {
+    //     git 'Default'  // Specify the exact path to the Git executable
+    // }
     environment {
         MAVEN_HOME = "/opt/apache-maven-3.9.9"  // Path to Maven installation
         PATH = "${MAVEN_HOME}/bin:${PATH}"  // Ensure Maven is in the PATH
@@ -17,8 +17,14 @@ pipeline {
             steps {
                 // This will print the shell being used in the Jenkins pipeline
                 sh 'echo $SHELL'
+                
+                // Check environment variables
+                sh 'echo "MAVEN_HOME: $MAVEN_HOME"'
+                sh 'echo "PATH: $PATH"'
+                sh 'echo "imageName: $imageName"'
+                sh 'echo "version: $version"'
             }
-        }
+        }   
         stage("build") {
             steps {
                 echo "----------- build started ----------"
