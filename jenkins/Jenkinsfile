@@ -1,13 +1,10 @@
 def registry = 'https://nguyentiennghi212952019.jfrog.io'
+
 pipeline {
     agent {
         node {
             label 'jenkinsslave'
         }
-    }
-    tools {
-        jgit
-        // git 'Default'  // Specify the exact path to the Git executable
     }
     environment {
         MAVEN_HOME = "/opt/apache-maven-3.9.9"  // Path to Maven installation
@@ -25,6 +22,31 @@ pipeline {
                 }
             }
         }
+
+        stage('Install Git') {
+            steps {
+                script {
+                    // Install Git if it's not available
+                    sh 'sudo apt-get update && sudo apt-get install -y git'  // For Ubuntu/Debian-based systems
+                    // Alternatively, use the appropriate package manager for other distros:
+                    // sh 'sudo yum install -y git'  // For RHEL/CentOS-based systems
+                    // sh 'sudo dnf install -y git'  // For Fedora-based systems
+                }
+            }
+        }
+
+        stage('Install Maven') {
+            steps {
+                script {
+                    // Install Maven if it's not available
+                    sh 'sudo apt-get update && sudo apt-get install -y maven'  // For Ubuntu/Debian-based systems
+                    // Alternatively, use the appropriate package manager for other distros:
+                    // sh 'sudo yum install -y maven'  // For RHEL/CentOS-based systems
+                    // sh 'sudo dnf install -y maven'  // For Fedora-based systems
+                }
+            }
+        }
+
         stage('Check Shell') {
             steps {
                 // This will print the shell being used in the Jenkins pipeline
@@ -36,37 +58,40 @@ pipeline {
                 sh 'echo "imageName: $imageName"'
                 sh 'echo "version: $version"'
             }
-        }   
-        stage("build") {
-            steps {
-                echo "----------- build started ----------"
-                sh 'mvn clean deploy -Dmaven.test.skip=true'
-                echo "----------- build completed ----------"
-            }
         }
-        stage("test") {
+
+        stage("Build") {
             steps {
-                echo "----------- unit test started ----------"
-                sh 'mvn surefire-report:report'
-                echo "----------- unit test Completed ----------"
+                echo "----------- Build Started ----------"
+                sh 'mvn clean deploy -Dmaven.test.skip=true'
+                echo "----------- Build Completed ----------"
             }
         }
 
-        stage('SonarQube analysis') {
+        stage("Test") {
+            steps {
+                echo "----------- Unit Test Started ----------"
+                sh 'mvn surefire-report:report'
+                echo "----------- Unit Test Completed ----------"
+            }
+        }
+
+        stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'blueberry-sonar-scanner'
             }
             steps {
-                withSonarQubeEnv('blueberry-sonarqube-server') { // If you have configured more than one global server connection, you can specify its name
+                withSonarQubeEnv('blueberry-sonarqube-server') {
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
         }
+
         stage("Quality Gate") {
             steps {
                 script {
-                    timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
-                        def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                    timeout(time: 1, unit: 'HOURS') {
+                        def qg = waitForQualityGate()
                         if (qg.status != 'OK') {
                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
                         }
@@ -74,6 +99,7 @@ pipeline {
                 }
             }
         }
+
         stage("Jar Publish") {
             steps {
                 script {
@@ -126,7 +152,7 @@ pipeline {
                 script {
                     echo '<--------------- Helm Deploy Started --------------->'
                     sh 'helm install ttrend ttrend-1.0.1.tgz'
-                    echo '<--------------- Helm Deploy Ends --------------->'
+                    echo '<--------------- Helm Deploy Ended --------------->'
                 }
             }
         }
