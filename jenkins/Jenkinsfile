@@ -13,6 +13,17 @@ pipeline {
         PATH = "${MAVEN_HOME}/bin:${PATH}"  // Ensure Maven is in the PATH
     }
     stages {
+        stage('Install Coreutils') {
+            steps {
+                script {
+                    // Installing coreutils on the agent
+                    sh 'sudo apt-get update && sudo apt-get install -y coreutils'  // For Ubuntu/Debian-based systems
+                    // Alternatively, use the appropriate package manager for other distros:
+                    // sh 'sudo yum install -y coreutils'  // For RHEL/CentOS-based systems
+                    // sh 'sudo dnf install -y coreutils'  // For Fedora-based systems
+                }
+            }
+        }
         stage('Check Shell') {
             steps {
                 // This will print the shell being used in the Jenkins pipeline
