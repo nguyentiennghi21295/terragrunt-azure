@@ -10,7 +10,7 @@ pipeline {
     // }
     environment {
         MAVEN_HOME = "/opt/apache-maven-3.9.9"  // Path to Maven installation
-        PATH = "${MAVEN_HOME}/bin:${PATH}"  // Ensure Maven is in the PATH
+        PATH = "/usr/bin/git:/usr/bin/bash/:/opt/apache-maven-3.9.9/bin"  // Ensure Maven is in the PATH
     }
     stages {
         stage('Install Coreutils') {
