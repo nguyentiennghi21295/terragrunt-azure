@@ -6,6 +6,9 @@ pipeline {
             label 'jenkinsslave'
         }
     }
+    tools {
+        git 'git-tool'
+    }
     environment {
         MAVEN_HOME = "/opt/apache-maven-3.9.9"  // Path to Maven installation
         PATH = "/usr/bin/git:/usr/bin/bash/:/opt/apache-maven-3.9.9/bin"  // Ensure Maven is in the PATH
