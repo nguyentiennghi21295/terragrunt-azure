@@ -2,11 +2,11 @@ def registry = 'https://nguyentiennghi212952019.jfrog.io'
 pipeline {
     agent {
         node {
-            label 'maven'
+            label 'jenkinsslave'
         }
     }
     tools {
-        git 'Default'  // Specify the exact path to the Git executable
+        Git 'Default'  // Specify the exact path to the Git executable
     }
     environment {
         MAVEN_HOME = "/opt/apache-maven-3.9.9"  // Path to Maven installation
