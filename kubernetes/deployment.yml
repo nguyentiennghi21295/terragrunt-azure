@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nguyentiennnghi21295-devops
+  namespace: nguyentiennnghi21295
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nguyentiennnghi21295-devops
+  template:
+    metadata:
+      labels:
+        app: nguyentiennnghi21295-devops
+    spec:
+      imagePullSecrets:
+        - name: jfrogcred
+      containers:
+        - name: nguyentiennnghi21295-devops
+          image: nguyentiennnghi21295.jfrog.io/nguyentiennnghi21295-docker/ttrend:2.1.2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: CONSUMER_KEY
+              value: "sqdsqdsqdqsdsq"
+            - name: CONSUMER_SECRET
+              value: "sqdqsdsqdsqdsqdsqdsqdsqdsqdfaefa"
+            - name: ACCESS_TOKEN
+              value: "sqdafezecdcwcwxcweafa"
+            - name: ACCESS_TOKEN_SECRET
+              value: "qsdqscwvezefzacqds"
