@@ -4,7 +4,7 @@ include "root" {
 }
 
 terraform {
-  source = "${get_parent_terragrunt_dir()}/../terraform/modules//${basename(get_terragrunt_dir())}"
+  source = "${get_parent_terragrunt_dir()}/../terraform/modules//${basename(get_terragrunt_dir())}/azure/"
 }
 
 dependencies {

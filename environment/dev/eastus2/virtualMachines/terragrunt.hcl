@@ -3,7 +3,7 @@ include "root" {
   path = find_in_parent_folders("terragrunt.hcl")
 }
 
-terraform {
+#terraform {
   source = "${get_parent_terragrunt_dir()}/../terraform/modules//${basename(get_terragrunt_dir())}"
 }
 
